@@ -34,6 +34,7 @@ public class Login extends AppCompatActivity {
     EditText edtPassword;
     Button btnLogin;
     Button btnRegister;
+    final List<Account> getAccount = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,19 +83,8 @@ public class Login extends AppCompatActivity {
                 finish();
             }
         });
-    }
 
-    public boolean isEmpty(String input){
-        if(input.trim().equals("")){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
-    public boolean checkLoginData(String Email, String Password){
-        boolean checker = false;
-        final List<Account> getAccount = new ArrayList<>();
         String URL = Account.getAccountTableURL();
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
@@ -114,7 +104,7 @@ public class Login extends AppCompatActivity {
                                 getAccount.add(account);
                             }
                         } catch (Exception ex) {
-
+                            Toast.makeText(Login.this, "Volley Error", Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -128,13 +118,21 @@ public class Login extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
+    }
 
+    public boolean isEmpty(String input){
+        if(input.trim().equals("")){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
-
-
+    public boolean checkLoginData(String Email, String Password){
+        boolean checker = false;
         for(int i = 0; i < getAccount.size(); i++){
-            if(Email == getAccount.get(i).getEmail()){
-                if(Password == getAccount.get(i).getPassword()){
+            if(Email.equals(getAccount.get(i).getEmail())){
+                if(Password.equals(getAccount.get(i).getPassword())){
                     checker = true;
                     break;
                 }
