@@ -5,6 +5,11 @@ public class Item {
     private String ItemName;
     private int Price;
     private int CategoryID;
+    private static String ItemTableURL = "https://api.backendless.com/099BF0BC-DEFD-54D5-FF1E-E7554F0AFE00/947D7949-26B6-165D-FF5A-A1612B614A00/data/Item";
+
+    public static String getItemTableURL() {
+        return ItemTableURL;
+    }
 
     public int getItemID() {
         return ItemID;

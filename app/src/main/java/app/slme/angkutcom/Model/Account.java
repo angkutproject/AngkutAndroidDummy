@@ -6,6 +6,11 @@ public class Account {
     private String Email;
     private String Phone;
     private String Password;
+    private static String AccountTableURL = "https://api.backendless.com/099BF0BC-DEFD-54D5-FF1E-E7554F0AFE00/947D7949-26B6-165D-FF5A-A1612B614A00/data/Account";
+
+    public static String getAccountTableURL() {
+        return AccountTableURL;
+    }
 
     public String getPassword() {
         return Password;

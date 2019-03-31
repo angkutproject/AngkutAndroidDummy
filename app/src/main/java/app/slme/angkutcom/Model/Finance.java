@@ -5,6 +5,11 @@ public class Finance {
     private String Balance;
     private String bankID;
     private String BankAccount;
+    private static String BankAccountTableURL = "https://api.backendless.com/099BF0BC-DEFD-54D5-FF1E-E7554F0AFE00/947D7949-26B6-165D-FF5A-A1612B614A00/data/Finance";
+
+    public static String getBankAccountTableURL() {
+        return BankAccountTableURL;
+    }
 
     public String getAccountID() {
         return AccountID;
