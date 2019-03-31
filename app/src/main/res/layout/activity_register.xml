@@ -39,6 +39,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"/>
         <EditText
+            android:id="@+id/edtPhone"
+            android:layout_width="match_parent"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:hint="@string/phone"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"/>
+        <EditText
             android:id="@+id/edtPassword"
             android:hint="@string/password"
             android:textColorHint="@color/colorWhite"
@@ -49,7 +57,7 @@
             android:layout_margin="10dp"/>
         <EditText
             android:id="@+id/edtConfirmPassword"
-            android:hint="@string/password"
+            android:hint="@string/confpass"
             android:textColorHint="@color/colorWhite"
             android:textColor="@color/colorWhite"
             android:layout_width="match_parent"

@@ -12,6 +12,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.util.Locale;
 
 import app.slme.angkutcom.Model.Account;
@@ -22,6 +32,7 @@ public class Register extends AppCompatActivity {
     EditText edtUsername;
     EditText edtPassword;
     EditText edtConfirmPassword;
+    EditText edtPhone;
     Button btnRegister;
     Button btnLogin;
 
@@ -41,6 +52,7 @@ public class Register extends AppCompatActivity {
         edtUsername = findViewById(R.id.edtUsername);
         edtPassword = findViewById(R.id.edtPassword);
         edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
+        edtPhone = findViewById(R.id.edtPhone);
 
         btnRegister = findViewById(R.id.btnRegister);
         btnLogin = findViewById(R.id.btnLogin);
@@ -52,21 +64,54 @@ public class Register extends AppCompatActivity {
                 String em = edtUsername.getText().toString();
                 String pw = edtPassword.getText().toString();
                 String confpw = edtConfirmPassword.getText().toString();
+                String phone = edtPhone.getText().toString();
 
-                if(usn.equals("") || em.equals("") || pw.equals("") || confpw.equals("")){
+                int countAcc = getIntent().getIntExtra("AccountCount", 1);
+
+                if(usn.equals("") || em.equals("") || pw.equals("") || confpw.equals("") || phone.equals("")){
                     Toast.makeText(Register.this, "All forms must be filled!", Toast.LENGTH_SHORT).show();
-                }else if(!isValidEmail(em)){
+                }else if(!isValidEmail(em)) {
                     Toast.makeText(Register.this, "Email invalid!", Toast.LENGTH_SHORT).show();
                     edtUsername.setText("");
                     edtPassword.setText("");
                     edtConfirmPassword.setText("");
+                }else if(phone.length() < 10){
+                    Toast.makeText(Register.this, "Phone number has invalid form!", Toast.LENGTH_SHORT).show();
+                    edtPhone.setText("");
                 } else if(confpw.equals(pw)) {
-                    Intent intent = new Intent(Register.this, Homepage.class);
-                    intent.putExtra("username", usn);
-                    intent.putExtra("password", pw);
-                    intent.putExtra("email", em);
-                    startActivity(intent);
-                    finish();
+                    String URL = Account.getAccountTableURL();
+                    JSONObject request = new JSONObject();
+                    try{
+                        request.put("AccountID", countAcc+1);
+                        request.put("FullName", usn);
+                        request.put("Password", pw);
+                        request.put("Email", em);
+                        request.put("Phone", phone);
+                    }catch (Exception e){
+                        Toast.makeText(Register.this, "Failed Creating JSON OBJECT", Toast.LENGTH_LONG).show();
+                    }
+
+                    JsonObjectRequest objRequest = new JsonObjectRequest(
+                            Request.Method.PUT,
+                            URL,
+                            request,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Intent intent = new Intent(Register.this, Homepage.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(Register.this, "Volley Error: " + error.toString(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                    );
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue.add(objRequest);
                 }else{
                     Toast.makeText(Register.this, "Password and confirm passwords not match!", Toast.LENGTH_SHORT).show();
                     edtPassword.setText("");

@@ -79,6 +79,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Login.this, Register.class);
+                intent.putExtra("AccountCount", getAccount.size());
                 startActivity(intent);
                 finish();
             }
@@ -121,11 +122,11 @@ public class Login extends AppCompatActivity {
     }
 
     public boolean isEmpty(String input){
+        boolean isTrue = false;
         if(input.trim().equals("")){
-            return true;
-        }else{
-            return false;
+            isTrue = true;
         }
+        return isTrue;
     }
 
     public boolean checkLoginData(String Email, String Password){
